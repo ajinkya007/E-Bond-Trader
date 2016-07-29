@@ -1,0 +1,28 @@
+c:\users\grad127\documents\visual studio 2015\Projects\EBondTrader\EBondTrader\bin\Debug\EBondTrader.exe.config
+c:\users\grad127\documents\visual studio 2015\Projects\EBondTrader\EBondTrader\bin\Debug\EBondTrader.exe
+c:\users\grad127\documents\visual studio 2015\Projects\EBondTrader\EBondTrader\bin\Debug\EBondTrader.pdb
+c:\users\grad127\documents\visual studio 2015\Projects\EBondTrader\EBondTrader\obj\Debug\EBondTrader.csprojResolveAssemblyReference.cache
+c:\users\grad127\documents\visual studio 2015\Projects\EBondTrader\EBondTrader\obj\Debug\MainWindow.g.cs
+c:\users\grad127\documents\visual studio 2015\Projects\EBondTrader\EBondTrader\obj\Debug\App.g.cs
+c:\users\grad127\documents\visual studio 2015\Projects\EBondTrader\EBondTrader\obj\Debug\EBondTrader_MarkupCompile.cache
+c:\users\grad127\documents\visual studio 2015\Projects\EBondTrader\EBondTrader\obj\Debug\EBondTrader_MarkupCompile.lref
+c:\users\grad127\documents\visual studio 2015\Projects\EBondTrader\EBondTrader\obj\Debug\MainWindow.baml
+c:\users\grad127\documents\visual studio 2015\Projects\EBondTrader\EBondTrader\obj\Debug\EBondTrader.g.resources
+c:\users\grad127\documents\visual studio 2015\Projects\EBondTrader\EBondTrader\obj\Debug\EBondTrader.Properties.Resources.resources
+c:\users\grad127\documents\visual studio 2015\Projects\EBondTrader\EBondTrader\obj\Debug\EBondTrader.csproj.GenerateResource.Cache
+c:\users\grad127\documents\visual studio 2015\Projects\EBondTrader\EBondTrader\obj\Debug\EBondTrader.exe
+c:\users\grad127\documents\visual studio 2015\Projects\EBondTrader\EBondTrader\obj\Debug\EBondTrader.pdb
+C:\Users\Grad127\Desktop\EBondTrader\EBondTrader\bin\Debug\EBondTrader.exe.config
+C:\Users\Grad127\Desktop\EBondTrader\EBondTrader\obj\Debug\EBondTrader.exe
+C:\Users\Grad127\Desktop\EBondTrader\EBondTrader\obj\Debug\EBondTrader.pdb
+C:\Users\Grad127\Desktop\EBondTrader\EBondTrader\bin\Debug\EBondTrader.exe
+C:\Users\Grad127\Desktop\EBondTrader\EBondTrader\bin\Debug\EBondTrader.pdb
+C:\Users\Grad127\Desktop\EBondTrader\EBondTrader\obj\Debug\EBondTrader.csprojResolveAssemblyReference.cache
+C:\Users\Grad127\Desktop\EBondTrader\EBondTrader\obj\Debug\MainWindow.g.cs
+C:\Users\Grad127\Desktop\EBondTrader\EBondTrader\obj\Debug\App.g.cs
+C:\Users\Grad127\Desktop\EBondTrader\EBondTrader\obj\Debug\EBondTrader_MarkupCompile.cache
+C:\Users\Grad127\Desktop\EBondTrader\EBondTrader\obj\Debug\EBondTrader_MarkupCompile.lref
+C:\Users\Grad127\Desktop\EBondTrader\EBondTrader\obj\Debug\MainWindow.baml
+C:\Users\Grad127\Desktop\EBondTrader\EBondTrader\obj\Debug\EBondTrader.g.resources
+C:\Users\Grad127\Desktop\EBondTrader\EBondTrader\obj\Debug\EBondTrader.Properties.Resources.resources
+C:\Users\Grad127\Desktop\EBondTrader\EBondTrader\obj\Debug\EBondTrader.csproj.GenerateResource.Cache
