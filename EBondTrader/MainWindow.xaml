@@ -25,10 +25,24 @@
                     <Label x:Name="label" Content="Maturity Date" HorizontalAlignment="Left" Height="28" Margin="53,149,0,0" VerticalAlignment="Top" Width="109"/>
                     <Label x:Name="SettlementDateLabel" Content="" HorizontalAlignment="Left" Height="28" Margin="201,151,0,0" VerticalAlignment="Top" Width="200"/>
                     <Button x:Name="button" Content="Trade" HorizontalAlignment="Left" Height="27" Margin="248,20,0,0" VerticalAlignment="Top" Width="84" Click="button_Click"/>
-                    <Label x:Name="label_Copy" Content="Start Date" HorizontalAlignment="Left" Height="28" Margin="53,116,0,0" VerticalAlignment="Top" Width="109"/>
+                    <Label x:Name="label_Copy" Content="Start Date" HorizontalAlignment="Left" Height="28" Margin="54,121,0,0" VerticalAlignment="Top" Width="109"/>
                     <Label x:Name="StartDateLabel" Content="" HorizontalAlignment="Left" Height="28" Margin="201,116,0,0" VerticalAlignment="Top" Width="200"/>
-                    <Button x:Name="BuyButton" Content="BUY" HorizontalAlignment="Left" Height="33" Margin="53,206,0,0" VerticalAlignment="Top" Width="124" Click="BuyButton_Click"/>
-                    <Button x:Name="SellButton" Content="SELL" HorizontalAlignment="Left" Height="33" Margin="270,206,0,0" VerticalAlignment="Top" Width="131" Click="SellButton_Click"/>
+                    <Button x:Name="BuyButton" Content="BUY" HorizontalAlignment="Left" Height="33" Margin="53,402,0,0" VerticalAlignment="Top" Width="124" Click="BuyButton_Click"/>
+                    <Button x:Name="SellButton" Content="SELL" HorizontalAlignment="Left" Height="33" Margin="270,402,0,0" VerticalAlignment="Top" Width="131" Click="SellButton_Click"/>
+                    <Label x:Name="label1" Content="Clean Price" HorizontalAlignment="Left" Height="26" Margin="53,180,0,0" VerticalAlignment="Top" Width="104"/>
+                    <Label x:Name="label1_Copy" Content="Dirty Price" HorizontalAlignment="Left" Height="26" Margin="353,180,0,0" VerticalAlignment="Top" Width="104"/>
+                    <Label x:Name="label3" Content="Yield to maturity" HorizontalAlignment="Left" Height="29" Margin="53,215,0,0" VerticalAlignment="Top" Width="104"/>
+                    <Label x:Name="YTMLabel" Content="" HorizontalAlignment="Left" Height="26" Margin="167,215,0,0" VerticalAlignment="Top" Width="115"/>
+                    <TextBox x:Name="CleanPricetextBox" HorizontalAlignment="Left" Height="22" Margin="166,184,0,0" TextWrapping="Wrap" Text="Clean Price" VerticalAlignment="Top" Width="116"/>
+                    <TextBox x:Name="DirtyPriceTextBox" HorizontalAlignment="Left" Height="22" Margin="490,184,0,0" TextWrapping="Wrap" Text="Dirty Price" VerticalAlignment="Top" Width="116"/>
+                    <Label x:Name="label2" Content="Trade Date:" HorizontalAlignment="Left" Height="27" Margin="53,259,0,0" VerticalAlignment="Top" Width="92"/>
+                    <DatePicker HorizontalAlignment="Left" Height="27" Margin="166,259,0,0" VerticalAlignment="Top" Width="131"/>
+                    <DatePicker HorizontalAlignment="Left" Height="27" Margin="492,259,0,0" VerticalAlignment="Top" Width="135"/>
+                    <Label x:Name="label2_Copy" Content="Settle Date" HorizontalAlignment="Left" Height="27" Margin="353,258,0,0" VerticalAlignment="Top" Width="92"/>
+                    <Label x:Name="label1_Copy1" Content="Accrued amount" HorizontalAlignment="Left" Height="26" Margin="54,311,0,0" VerticalAlignment="Top" Width="104"/>
+                    <Label x:Name="AccruedLabel" Content="" HorizontalAlignment="Left" Height="26" Margin="168,311,0,0" VerticalAlignment="Top" Width="104"/>
+                    <Label x:Name="label1_Copy3" Content="Settlement Amount" HorizontalAlignment="Left" Height="26" Margin="353,311,0,0" VerticalAlignment="Top" Width="121"/>
+                    <Label x:Name="SettlementAmountLabel" Content="" HorizontalAlignment="Left" Height="26" Margin="492,311,0,0" VerticalAlignment="Top" Width="104"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Trades" Margin="87,0,-143,0">

@@ -65,6 +65,11 @@ namespace EBondTrader
                 BondNameLabel.Content = selectedBond.BondName;
                 SettlementDateLabel.Content = selectedBond.MaturityDate.ToString();
                 StartDateLabel.Content = selectedBond.StartDate.ToString();
+                CleanPricetextBox.Text = "138.00";
+                DirtyPriceTextBox.Text = "143.56";
+                YTMLabel.Content = "6.40%";
+                AccruedLabel.Content = "5.56";
+                SettlementAmountLabel.Content = "140.00";
             }
         }
 
