@@ -1,0 +1,22 @@
+﻿<Window x:Class="E_Bond_Trader.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:E_Bond_Trader"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525" Icon="Icon1.ico">
+    <Grid>
+        <DockPanel>
+           
+            <TabControl x:Name="MainTab"  Height="Auto" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding}" >
+                <TabControl.Resources>
+                    <DataTemplate x:Key="TabHeader" DataType="TabItem">
+
+                    </DataTemplate>
+
+                </TabControl.Resources>
+            </TabControl>
+        </DockPanel>
+    </Grid>
+</Window>

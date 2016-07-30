@@ -1,0 +1,13 @@
+﻿<UserControl x:Class="TestTabs.TabCloseButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TestTabs"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Button x:Name="TabCloseButton1" Background="Red" FontSize="64" Click="TabCloseButton1_Click">
+        <Path Data="M1,9 L9,1 M1,1 L9,9" Stroke="White" StrokeThickness="2" />
+    </Button>
+
+</UserControl>

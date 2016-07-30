@@ -1,0 +1,12 @@
+﻿<UserControl x:Class="E_Bond_Trader.UserControl1"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:E_Bond_Trader"
+             mc:Ignorable="d" Height="23.684" Width="19.737">
+    <Button x:Name="CloseButton" Click="OnClick" Background="Red">
+        <Path Data="M1,9 L9,1 M1,1 L9,9" Stroke="White" StrokeThickness="2" />
+    </Button>
+
+</UserControl>
