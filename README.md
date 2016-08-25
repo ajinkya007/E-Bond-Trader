@@ -8,7 +8,8 @@
 · Interactive client implemented as either a desktop client or a browser-based web client  
 The functional requirements are listed below  
 Requirements - The application should contain the following 3 screens  
-Bond Static Maintenance A user interface screen with the fields outlined below  
+##Bond Static Maintenance:
+A user interface screen with the fields outlined below  
 a. ISIN Bond unique identifier  
 b. Description Bond description  
 c. Start Date Start date of the bond  
@@ -19,7 +20,7 @@ f. Coupon Rate Interest Rate
 g. Piece Size Unit amount for 1 piece (Normally  
 maintained as 100 rs)  
 h. Currency Bond Currency (Drop Down)  
-Trade Booking Screen  
+##Trade Booking Screen :   
 With the fields listed below to capture new trades.  
 a. Bond ISIN (Dropdown with all the maintained bonds)  
 b. Settlement Date  
@@ -35,5 +36,6 @@ On changing clean price, the dirty price and yield should be recomputed
 and accordingly the amounts.  
 On changing dirty price, the clean price and yield should be recomputed  
 and accordingly the amounts.  
-Trade Blotter Screen All booked trades should be displayed in the blotter.  
+##Trade Blotter Screen :
+All booked trades should be displayed in the blotter.  
 
