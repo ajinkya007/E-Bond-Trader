@@ -1,0 +1,17 @@
+<!-- This datasource needs to be added to the standalone/standalone-full.xml file depending upon the configuration file of the wildfly server -->
+
+<datasource jndi-name="java:jboss/datasources/mydatabaseDS"
+	pool-name="mydatabaseDS" enabled="true" use-java-context="true">
+	<connection-url>jdbc:mysql://localhost/EbondShark</connection-url>
+	<driver>mysql</driver>
+	<pool>
+		<min-pool-size>10</min-pool-size>
+		<max-pool-size>10</max-pool-size>
+		<prefill>true</prefill>
+	</pool>
+	<security>
+		<user-name>root</user-name>
+		<password>password</password>
+	</security>
+</datasource>
+                
