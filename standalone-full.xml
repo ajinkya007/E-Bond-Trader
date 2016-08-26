@@ -1,4 +1,6 @@
-<!-- This datasource needs to be added to the standalone/standalone-full.xml file depending upon the configuration file of the wildfly server -->
+<!-- This datasource needs to be added to the standalone/standalone-full.xml file depending upon the configuration file of the wildfly server 
+     Replace the localhost with the ip address of the machine which hosts the database
+-->
 
 <datasource jndi-name="java:jboss/datasources/EbondShark"
 	pool-name="mydatabaseDS" enabled="true" use-java-context="true">
