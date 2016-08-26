@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="EbondShark">
+        <wb-resource deploy-path="/" source-path="/EarContent" tag="defaultRootSource"/>
+        <dependent-module archiveName="EbondSharkEJB.jar" deploy-path="/" handle="module:/resource/EbondSharkEJB/EbondSharkEJB">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="EbondSharkEJBClient.jar" deploy-path="/" handle="module:/resource/EbondSharkEJBClient/EbondSharkEJBClient">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="EBondSharkAppClient.jar" deploy-path="/" handle="module:/resource/EBondSharkAppClient/EBondSharkAppClient">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="EBondSharkJPA.jar" deploy-path="/lib" handle="module:/resource/EBondSharkJPA/EBondSharkJPA">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="EbondSharkWeb.war" deploy-path="/" handle="module:/resource/EbondSharkWeb/EbondSharkWeb">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+    </wb-module>
+</project-modules>
