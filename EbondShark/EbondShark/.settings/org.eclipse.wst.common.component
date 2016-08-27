@@ -12,11 +12,11 @@
             <dependent-object/>
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="EBondSharkJPA.jar" deploy-path="/lib" handle="module:/resource/EBondSharkJPA/EBondSharkJPA">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="EbondSharkWeb.war" deploy-path="/" handle="module:/resource/EbondSharkWeb/EbondSharkWeb">
             <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="EbondSharkJPA.jar" deploy-path="/lib" handle="module:/resource/EbondSharkJPA/EbondSharkJPA">
             <dependency-type>uses</dependency-type>
         </dependent-module>
     </wb-module>
