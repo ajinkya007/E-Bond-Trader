@@ -15,42 +15,61 @@ import java.math.BigDecimal;
 public class Trade implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private TradePK id;
+	@Id
+	@SequenceGenerator(name="TRADES_TRADE_ID_GENERATOR" )
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TRADES_TRADE_ID_GENERATOR")
+	@Column(unique=true, nullable=false)
+	private int trade_id;
 
-	@Column(name="buy_sell")
+	@Column(name="buy_sell", nullable=false, length=50)
 	private String buySell;
 
-	@Column(name="date_of_order")
-	private String dateOfOrder;
+	@Column(nullable=false)
+	private int day;
 
-	@Column(name="no_of_bonds")
-	private String noOfBonds;
+	@Column(nullable=false)
+	private int hour;
 
+	@Column(nullable=false)
+	private int minutes;
+
+	@Column(nullable=false)
+	private int month;
+
+	@Column(name="no_of_bonds", nullable=false)
+	private int noOfBonds;
+
+	@Column(nullable=false, precision=10)
 	private BigDecimal price;
 
-	@Column(name="trade_status")
+	@Column(nullable=false)
+	private int seconds;
+
+	@Column(name="trade_status", nullable=false, length=50)
 	private String tradeStatus;
+
+	@Column(nullable=false)
+	private int year;
 
 	//bi-directional many-to-one association to Bond
 	@ManyToOne(cascade={CascadeType.ALL})
-	@JoinColumn(name="ISIN")
+	@JoinColumn(name="ISIN", nullable=false)
 	private Bond bond;
 
 	//bi-directional many-to-one association to Trader
 	@ManyToOne
-	@JoinColumn(name="Trader_id")
+	@JoinColumn(name="Trader_id", nullable=false)
 	private Trader trader;
 
 	public Trade() {
 	}
 
-	public TradePK getId() {
-		return this.id;
+	public int getTrade_id() {
+		return this.trade_id;
 	}
 
-	public void setId(TradePK id) {
-		this.id = id;
+	public void setTrade_id(int trade_id) {
+		this.trade_id = trade_id;
 	}
 
 	public String getBuySell() {
@@ -61,19 +80,43 @@ public class Trade implements Serializable {
 		this.buySell = buySell;
 	}
 
-	public String getDateOfOrder() {
-		return this.dateOfOrder;
+	public int getDay() {
+		return this.day;
 	}
 
-	public void setDateOfOrder(String dateOfOrder) {
-		this.dateOfOrder = dateOfOrder;
+	public void setDay(int day) {
+		this.day = day;
 	}
 
-	public String getNoOfBonds() {
+	public int getHour() {
+		return this.hour;
+	}
+
+	public void setHour(int hour) {
+		this.hour = hour;
+	}
+
+	public int getMinutes() {
+		return this.minutes;
+	}
+
+	public void setMinutes(int minutes) {
+		this.minutes = minutes;
+	}
+
+	public int getMonth() {
+		return this.month;
+	}
+
+	public void setMonth(int month) {
+		this.month = month;
+	}
+
+	public int getNoOfBonds() {
 		return this.noOfBonds;
 	}
 
-	public void setNoOfBonds(String noOfBonds) {
+	public void setNoOfBonds(int noOfBonds) {
 		this.noOfBonds = noOfBonds;
 	}
 
@@ -85,12 +128,28 @@ public class Trade implements Serializable {
 		this.price = price;
 	}
 
+	public int getSeconds() {
+		return this.seconds;
+	}
+
+	public void setSeconds(int seconds) {
+		this.seconds = seconds;
+	}
+
 	public String getTradeStatus() {
 		return this.tradeStatus;
 	}
 
 	public void setTradeStatus(String tradeStatus) {
 		this.tradeStatus = tradeStatus;
+	}
+
+	public int getYear() {
+		return this.year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
 	}
 
 	public Bond getBond() {

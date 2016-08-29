@@ -17,58 +17,75 @@ public class Bond implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="BONDS_ISIN_GENERATOR", sequenceName="ISIN")
+	@SequenceGenerator(name="BONDS_ISIN_GENERATOR" )
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="BONDS_ISIN_GENERATOR")
+	@Column(unique=true, nullable=false, length=50)
 	private String isin;
 
+	@Column(nullable=false, precision=10)
 	private BigDecimal ask;
 
+	@Column(nullable=false, precision=10)
 	private BigDecimal bid;
 
+	@Column(nullable=false, length=50)
 	private String category;
 
+	@Column(nullable=false, precision=10)
 	private BigDecimal change;
 
+	@Column(nullable=false, precision=10)
 	private BigDecimal coupon;
 
+	@Column(nullable=false)
 	private int creditRating;
 
+	@Column(nullable=false, length=50)
 	private String currency;
 
+	@Column(nullable=false, length=50)
 	private String field;
 
+	@Column(nullable=false)
 	private int frequency;
 
+	@Column(nullable=false, precision=10)
 	private BigDecimal high;
 
+	@Column(nullable=false)
 	private int id;
 
-	@Column(name="issue_day")
+	@Column(name="issue_day", nullable=false)
 	private int issueDay;
 
-	@Column(name="issue_month")
+	@Column(name="issue_month", nullable=false)
 	private int issueMonth;
 
-	@Column(name="issue_year")
+	@Column(name="issue_year", nullable=false)
 	private int issueYear;
 
+	@Column(nullable=false, length=50)
 	private String issuerName;
 
+	@Column(nullable=false, precision=10)
 	private BigDecimal last;
 
+	@Column(nullable=false, precision=10)
 	private BigDecimal low;
 
-	@Column(name="maturity_day")
+	@Column(name="maturity_day", nullable=false)
 	private int maturityDay;
 
-	@Column(name="maturity_month")
+	@Column(name="maturity_month", nullable=false)
 	private int maturityMonth;
 
-	@Column(name="maturity_yaer")
-	private int maturityYaer;
+	@Column(name="maturity_year", nullable=false)
+	private int maturityYear;
 
+	@Column(nullable=false)
 	private int time;
 
+	@Column(nullable=false, precision=10)
 	private BigDecimal yield;
 
 	//bi-directional many-to-one association to Trade
@@ -238,12 +255,12 @@ public class Bond implements Serializable {
 		this.maturityMonth = maturityMonth;
 	}
 
-	public int getMaturityYaer() {
-		return this.maturityYaer;
+	public int getMaturityYear() {
+		return this.maturityYear;
 	}
 
-	public void setMaturityYaer(int maturityYaer) {
-		this.maturityYaer = maturityYaer;
+	public void setMaturityYear(int maturityYear) {
+		this.maturityYear = maturityYear;
 	}
 
 	public int getTime() {

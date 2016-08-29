@@ -9,7 +9,6 @@
 		<class>ebondshark.jpa.Bond</class>
 		<class>ebondshark.jpa.Trader</class>
 		<class>ebondshark.jpa.Trade</class>
-		<class>ebondshark.jpa.TradePK</class>
 	</persistence-unit>
 
 </persistence>

@@ -10,30 +10,36 @@ import java.util.List;
  * 
  */
 @Entity
+@Table(name="trader")
 @NamedQuery(name="Trader.findAll", query="SELECT t FROM Trader t")
 public class Trader implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TRADER_TRADER_ID_GENERATOR", sequenceName="TRADER_ID")
+	@SequenceGenerator(name="TRADER_TRADER_ID_GENERATOR" )
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TRADER_TRADER_ID_GENERATOR")
+	@Column(unique=true, nullable=false, length=50)
 	private String trader_id;
 
+	@Column(nullable=false, length=50)
 	private String address;
 
+	@Column(nullable=false, length=50)
 	private String age;
 
-	@Column(name="credit_rarting")
-	private String creditRarting;
+	@Column(name="credit_rating", nullable=false, length=50)
+	private String creditRating;
 
+	@Column(nullable=false, length=50)
 	private String password;
 
-	@Column(name="phone_num")
+	@Column(name="phone_num", nullable=false, length=50)
 	private String phoneNum;
 
+	@Column(nullable=false, length=50)
 	private String sex;
 
-	@Column(name="trader_name")
+	@Column(name="trader_name", nullable=false, length=50)
 	private String traderName;
 
 	//bi-directional many-to-one association to Trade
@@ -67,12 +73,12 @@ public class Trader implements Serializable {
 		this.age = age;
 	}
 
-	public String getCreditRarting() {
-		return this.creditRarting;
+	public String getCreditRating() {
+		return this.creditRating;
 	}
 
-	public void setCreditRarting(String creditRarting) {
-		this.creditRarting = creditRarting;
+	public void setCreditRating(String creditRating) {
+		this.creditRating = creditRating;
 	}
 
 	public String getPassword() {
