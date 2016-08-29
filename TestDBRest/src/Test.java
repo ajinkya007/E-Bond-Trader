@@ -35,7 +35,7 @@ public class Test {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			connection = DriverManager
-					.getConnection("jdbc:mysql://192.168.99.53:3306/mydatabase?user=finley&password=password");
+					.getConnection("jdbc:mysql://192.168.99.52:3306/ebondshark?user=finley&password=password");
 			hostName = InetAddress.getLocalHost().getHostName();
 
 		} catch (ClassNotFoundException e) {
@@ -47,11 +47,11 @@ public class Test {
 		}
 	}
 
-	@GET
+/*	@GET
 	@Produces("application/json")
 	public static List<Books> queryData() throws SQLException {
 
-		String sql = "SELECT Isbn, Title, Price FROM mydatabase.Books";
+		String sql = "SELECT * FROM mydatabase.books";
 
 		Statement st = connection.createStatement();
 		ResultSet rs = st.executeQuery(sql);
@@ -70,13 +70,54 @@ public class Test {
 		return books;
 
 	}
+*/
+
+	@GET
+	@Produces("application/json")
+	public static List<Bonds> queryData() throws SQLException {
+
+		String sql = "SELECT * FROM ebondshark.bonds";
+
+		Statement st = connection.createStatement();
+		ResultSet rs = st.executeQuery(sql);
+		List<Bonds> bonds = new ArrayList<Bonds>();
+		while (rs.next() != false) {
+			Bonds bond = new Bonds();
+			bond.setId(rs.getInt(1));
+			bond.setIssuerName(rs.getString(2));
+			bond.setIsin(rs.getString(3));
+			bond.setCoupon(rs.getBigDecimal(4));
+			bond.setMaturityMonth(rs.getInt(5));
+			bond.setMaturityDay(rs.getInt(6));
+			bond.setMaturityYaer(rs.getInt(7));
+			bond.setHigh(rs.getBigDecimal(8));
+			bond.setLow(rs.getBigDecimal(9));
+			bond.setLast(rs.getBigDecimal(10));
+			bond.setYield(rs.getBigDecimal(11));
+			bond.setChange(rs.getBigDecimal(12));
+			bond.setFrequency(rs.getInt(13));
+			bond.setIssueMonth(rs.getInt(14));
+			bond.setIssueDay(rs.getInt(15));
+			bond.setIssueYear(rs.getInt(16));
+			bond.setCurrency(rs.getString(17));
+			bond.setCreditRating(rs.getInt(18));
+			bond.setTime(rs.getInt(19));
+			bond.setField(rs.getString(20));
+			bond.setCategory(rs.getString(21));
+			bond.setAsk(rs.getBigDecimal(22));
+			bond.setBid(rs.getBigDecimal(23));
+			bonds.add(bond);
+		}
+		return bonds;
+
+	}
 
 	@POST
 	@Produces({ MediaType.APPLICATION_XML, MediaType.TEXT_XML, MediaType.APPLICATION_JSON })
 	public Response insertProductObject(Books product) throws SQLException {
 
 		// Try to get the "products" collection from application state.
-		List<Books> books = Test.queryData();
+		//List<Books> books = Test.queryData();
 
 		String sql = "Insert into mydatabase.Books values(" + product.getIsbn() + ",'" + product.getTitle() + "',"
 				+ product.getPrice() + ")";
