@@ -90,6 +90,24 @@ public class EbondSharkBean implements EbondSharkBeanRemote, EbondSharkBeanLocal
         List<Bond> bondsByFrequency = sql.getResultList();
         return bondsByFrequency;
     }
+    
+    public List<Bond> getBondsByYieldRange1(){
+    	TypedQuery<Bond> sql = em.createQuery("SELECT p FROM Bond WHERE p.yield BETWEEN 0 AND 1.999", Bond.class);
+    	List<Bond> bondsByYieldRange1 = sql.getResultList();
+    	return bondsByYieldRange1;
+    } 
+    
+    public List<Bond> getBondsByYieldRange2(){
+    	TypedQuery<Bond> sql = em.createQuery("SELECT p FROM Bond WHERE p.yield BETWEEN 2 AND 3.999", Bond.class);
+    	List<Bond> bondsByYieldRange2 = sql.getResultList();
+    	return bondsByYieldRange2;
+    }
+    
+    public List<Bond> getBondsByYieldRange3(){
+    	TypedQuery<Bond> sql = em.createQuery("SELECT p FROM Bond WHERE p.yield BETWEEN 4 AND 5.999", Bond.class);
+    	List<Bond> bondsByYieldRange3 = sql.getResultList();
+    	return bondsByYieldRange3;
+    }
 //    public EbondSharkBean() {
 //        // TODO Auto-generated constructor stub
 //    }
