@@ -6,12 +6,16 @@ import java.util.List;
 
 @Local
 public interface EbondSharkBeanLocal {
-	List<Bond> getAllBonds();
-	List<Bond> getBondsByCategory(String category);
-	List<Bond> getBondsByISIN(String isin);
-	List<Bond> getBondsByField(String field);
-	List<Bond> getBondsByCurrency(String currency);
-	List<Bond> getBondsByYieldRange1();
-	List<Bond> getBondsByYieldRange2();
-	List<Bond> getBondsByYieldRange3();
+	public List<Bond> getAllBonds();
+	public List<Bond> getBondsByCategory(String category);
+	public List<Bond> getBondsByISIN(String isin);
+	public List<Bond> getBondsByField(String field);
+	public List<Bond> getBondsByCurrency(String currency);
+	public List<Bond> getBondsByFrequency(int frequency);
+	public List<Bond> getBondsByYieldRange(int min, int max);
+	public int getYearsToMaturity();
+	public String login(String username, String password);
+	public String register(Trader tObj);
+	public int yearsToMaturity(String ISIN);
+
 }

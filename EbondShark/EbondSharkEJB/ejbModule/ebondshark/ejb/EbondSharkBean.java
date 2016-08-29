@@ -1,5 +1,7 @@
 package ebondshark.ejb;
 
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -10,7 +12,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 //import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+
 import ebondshark.jpa.Bond;
+import ebondshark.jpa.Trader;
 
 
 /**
@@ -24,6 +28,9 @@ public class EbondSharkBean implements EbondSharkBeanRemote, EbondSharkBeanLocal
 
 	@PersistenceContext(name="EbondSharkJPA")
     private EntityManager em;
+	
+	private String username;
+	private String password;
     /**
      * Default constructor. 
      */
@@ -54,6 +61,7 @@ public class EbondSharkBean implements EbondSharkBeanRemote, EbondSharkBeanLocal
         return bonds;
 	}
 	
+	@Override
 	public List<Bond> getBondsByISIN(String isin) {
 		 
         String sql = "SELECT p FROM Bond AS p WHERE p.isin LIKE '%" + isin + "%'";
@@ -63,6 +71,7 @@ public class EbondSharkBean implements EbondSharkBeanRemote, EbondSharkBeanLocal
         return bondsByIsin;
     }
    
+	@Override
     public List<Bond> getBondsByField(String field) {
  
         String sql = "SELECT p FROM Bond AS p WHERE p.isin LIKE '%" + field + "%'";
@@ -72,6 +81,7 @@ public class EbondSharkBean implements EbondSharkBeanRemote, EbondSharkBeanLocal
         return bondsByField;
     }
     
+	@Override
     public List<Bond> getBondsByCurrency(String currency) {
     	 
         String sql = "SELECT p FROM Bond AS p WHERE p.currency LIKE '%" + currency + "%'";
@@ -81,6 +91,7 @@ public class EbondSharkBean implements EbondSharkBeanRemote, EbondSharkBeanLocal
         return bondsByCurrency;
     }
     
+	@Override
     public List<Bond> getBondsByFrequency(int frequency) {
    	 
     	TypedQuery<Bond> sql = em.createQuery("SELECT p FROM Bond AS p WHERE p.currency = :freq", Bond.class);
@@ -91,25 +102,93 @@ public class EbondSharkBean implements EbondSharkBeanRemote, EbondSharkBeanLocal
         return bondsByFrequency;
     }
     
-    public List<Bond> getBondsByYieldRange1(){
-    	TypedQuery<Bond> sql = em.createQuery("SELECT p FROM Bond WHERE p.yield BETWEEN 0 AND 1.999", Bond.class);
-    	List<Bond> bondsByYieldRange1 = sql.getResultList();
-    	return bondsByYieldRange1;
+    @Override
+    public List<Bond> getBondsByYieldRange(int min, int max){
+    	TypedQuery<Bond> sql = em.createQuery("SELECT p FROM Bond WHERE p.yield BETWEEN :min AND :max", Bond.class);
+    	sql.setParameter("min", min);
+    	sql.setParameter("max", max);
+    	List<Bond> bondsByYieldRange = sql.getResultList();
+    	return bondsByYieldRange;
     } 
     
-    public List<Bond> getBondsByYieldRange2(){
-    	TypedQuery<Bond> sql = em.createQuery("SELECT p FROM Bond WHERE p.yield BETWEEN 2 AND 3.999", Bond.class);
-    	List<Bond> bondsByYieldRange2 = sql.getResultList();
-    	return bondsByYieldRange2;
-    }
-    
-    public List<Bond> getBondsByYieldRange3(){
-    	TypedQuery<Bond> sql = em.createQuery("SELECT p FROM Bond WHERE p.yield BETWEEN 4 AND 5.999", Bond.class);
-    	List<Bond> bondsByYieldRange3 = sql.getResultList();
-    	return bondsByYieldRange3;
-    }
 //    public EbondSharkBean() {
 //        // TODO Auto-generated constructor stub
 //    }
+    
+    
+//	int getYearsToMaturity(){
+//		
+//	}
+    
+    @Override
+    public String login(String username, String password){
+    	TypedQuery<Trader> login = em.createQuery("SELECT p FROM Trader WHERE p.trader_id like :user", Trader.class);
+    	login.setParameter("user", username);
+    	List<Trader> result = login.getResultList();
+    	if(result == null){
+    		return "Trader does not exist";
+    	} else if(password.compareTo(result.get(0).getPassword()) == 0) {
+    		setUsername(username);
+    		setPassword(password);
+    		return "Succesful Login";
+    	}
+    	return "Wrong password entered";
+    }
+    
+    public void setUsername(String username) {
+		this.username = username;
+    }
+    
+    public void setPassword(String password) {
+		this.password = password;
+    }
+    
+    public String getUsername() {
+    	return username;
+    }
+    
+    public String getPassword() {
+    	return password;
+    }
+    
+    @Override
+    public String register (Trader tObj){
+    	TypedQuery<Trader> check = em.createQuery("SELECT p FROM Trader WHERE p.trader_id like :user", Trader.class);
+    	check.setParameter("user", tObj.getTrader_id());
+    	if(check.getResultList() != null) {
+    		return "Trader with " + tObj.getTraderName() + "already exists";
+    	}
+
+    	TypedQuery<Trader> register = em.createQuery("Insert into trader values(:id, :name, :password, :age, :sex, :address, :phonenumber, :crating)", Trader.class);
+    	register.setParameter("id", tObj.getTrader_id());
+    	register.setParameter("name", tObj.getTraderName());
+    	register.setParameter("password", tObj.getPassword());
+    	register.setParameter("age", tObj.getAge());
+    	register.setParameter("sex", tObj.getSex());
+    	register.setParameter("address", tObj.getAddress());
+    	register.setParameter("phonenumber", tObj.getPhoneNum());
+    	register.setParameter("crating", tObj.getCreditRating());
+    	if(register.executeUpdate() == 0) {
+    		return "registration successful";
+    	} else {
+    		return "encountered an error while registration";
+    	}
+    }
+
+    @Override
+    public int yearsToMaturity(String ISIN) {
+    	TypedQuery bond = em.createQuery("SELECT p.maturity_year FROM Bond WHERE p.ISIN like :ISIN", Bond.class);
+        bond.setParameter("ISIN", ISIN);
+        int maturityYear = (int) bond.getSingleResult();
+        int presentDate = Calendar.getInstance().get(Calendar.YEAR);
+        return (maturityYear - presentDate);
+    }
+ 
+	@Override
+	public int getYearsToMaturity() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 
 }
