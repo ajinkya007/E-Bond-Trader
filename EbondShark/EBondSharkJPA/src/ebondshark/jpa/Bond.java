@@ -2,6 +2,9 @@ package ebondshark.jpa;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -89,7 +92,8 @@ public class Bond implements Serializable {
 	private BigDecimal yield;
 
 	//bi-directional many-to-one association to Trade
-	@OneToMany(mappedBy="bond", cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+	@OneToMany(fetch= FetchType.EAGER, mappedBy="bond", cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+	@JsonManagedReference
 	private List<Trade> trades;
 
 	public Bond() {

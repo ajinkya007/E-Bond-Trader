@@ -13,7 +13,7 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="C:/Grad software 2016/Java Tools/wildfly-10.0.0.Final/wildfly-10.0.0.Final/bin/client/jboss-client.jar" sourcepath="C:/Users/Grad94/.m2/repository/org/wildfly/wildfly-client-all/10.0.0.Final/wildfly-client-all-10.0.0.Final-sources.jar"/>
-	<classpathentry kind="lib" path="C:/JavaEEJBossDev/Databases/hibernate-core-4.3.9.Final.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Grad94/Downloads/Lab Files/JavaEEJBossDev/JavaEEJBossDev/Databases/hibernate-core-4.3.9.Final.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/EbondSharkEJBClient"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

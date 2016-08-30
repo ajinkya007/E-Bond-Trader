@@ -2,6 +2,9 @@ package ebondshark.jpa;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.math.BigDecimal;
 
 
@@ -52,13 +55,15 @@ public class Trade implements Serializable {
 	private int year;
 
 	//bi-directional many-to-one association to Bond
-	@ManyToOne(cascade={CascadeType.ALL})
+	@ManyToOne(fetch= FetchType.EAGER,cascade={CascadeType.ALL})
+	@JsonBackReference
 	@JoinColumn(name="ISIN", nullable=false)
 	private Bond bond;
 
 	//bi-directional many-to-one association to Trader
-	@ManyToOne
+	@ManyToOne(fetch= FetchType.EAGER)
 	@JoinColumn(name="Trader_id", nullable=false)
+	@JsonBackReference
 	private Trader trader;
 
 	public Trade() {

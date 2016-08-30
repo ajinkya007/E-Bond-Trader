@@ -2,6 +2,9 @@ package ebondshark.jpa;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.util.List;
 
 
@@ -43,7 +46,8 @@ public class Trader implements Serializable {
 	private String traderName;
 
 	//bi-directional many-to-one association to Trade
-	@OneToMany(mappedBy="trader")
+	@OneToMany(fetch= FetchType.EAGER, mappedBy="trader")
+	@JsonManagedReference
 	private List<Trade> trades;
 
 	public Trader() {
