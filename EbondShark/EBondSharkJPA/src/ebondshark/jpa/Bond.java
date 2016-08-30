@@ -1,6 +1,8 @@
 package ebondshark.jpa;
 
 import java.io.Serializable;
+
+import javax.lang.model.element.PackageElement;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;

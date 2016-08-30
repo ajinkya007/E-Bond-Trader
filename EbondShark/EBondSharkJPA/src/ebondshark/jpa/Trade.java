@@ -23,7 +23,7 @@ public class Trade implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TRADES_TRADE_ID_GENERATOR")
 	@Column(unique=true, nullable=false)
 	private int trade_id;
-
+	
 	@Column(name="buy_sell", nullable=false, length=50)
 	private String buySell;
 

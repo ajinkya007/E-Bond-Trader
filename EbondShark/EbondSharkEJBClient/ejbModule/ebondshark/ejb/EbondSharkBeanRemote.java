@@ -19,6 +19,8 @@ public interface EbondSharkBeanRemote {
 	public List<Bond> getBondsByYieldRange(int min, int max);
 	public String login(String uername, String password);
 	public String register(Trader tObj);
-	public int yearsToMaturity(String ISIN);
 	public List<Trade> getAllTrades();
+	public List<Trader> getAllTraders();
+	public Bond getBondByISIN(String isin);
+
 }

@@ -42,7 +42,7 @@ public class EbondSharkBonds {
 
 	@GET
 	@Produces("application/json")
-	public List<Bond> getProducts() {
+	public List<Bond> getProducts(@QueryParam("filter") @DefaultValue("") String filter) {
 
 		if (bean == null)
 			return null;

@@ -10,6 +10,7 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import ebondshark.jpa.Bond;
@@ -66,11 +67,21 @@ public class EbondSharkBean implements EbondSharkBeanRemote, EbondSharkBeanLocal
 	}
 
 	@Override
+	public Bond getBondByISIN(String isin) {
+
+		TypedQuery<Bond> query = em.createQuery("SELECT p FROM Bond as p WHERE p.isin = :ISIN", Bond.class);
+		query.setParameter("ISIN", isin);
+		Bond bond = query.getSingleResult();
+		System.out.println(bond);
+		return bond;
+	}
+
+	@Override
 	public List<Bond> getBondsByField(String field) {
 
 		String sql = "SELECT p FROM Bond AS p WHERE p.field = :field";
 		TypedQuery<Bond> query = em.createQuery(sql, Bond.class);
-		query.setParameter("field",field);
+		query.setParameter("field", field);
 		List<Bond> bondsByField = query.getResultList();
 		System.out.println(bondsByField);
 		return bondsByField;
@@ -165,22 +176,24 @@ public class EbondSharkBean implements EbondSharkBeanRemote, EbondSharkBeanLocal
 	}
 
 	@Override
-	public int yearsToMaturity(String ISIN) {
-		TypedQuery<Bond> bond = em.createQuery("SELECT p.maturity_year FROM Bond WHERE p.ISIN like :ISIN", Bond.class);
-		bond.setParameter("ISIN", ISIN);
-		Bond bondResult = bond.getSingleResult();
-		int maturityYear = bondResult.getMaturityYear();
-		int presentDate = Calendar.getInstance().get(Calendar.YEAR);
-		return (maturityYear - presentDate);
-	}
-
-	@Override
-	public List<Trade>  getAllTrades() {
+	public List<Trade> getAllTrades() {
 		// TODO Auto-generated method stub
-		TypedQuery<Trade> query = em.createQuery("SELECT p FROM Trade AS p", Trade.class);
+		// TypedQuery<Trade> query = em.createQuery("SELECT p FROM Trade AS p ",
+		// Trade.class);
+		Query query = em.createNativeQuery("SELECT *, b.isin FROM Trades p ,Bonds b where p.isin = b.isin",
+				Trade.class);
 		List<Trade> trades = query.getResultList();
 		System.out.println(trades);
 		return trades;
+	}
+
+	@Override
+	public List<Trader> getAllTraders() {
+		// TODO Auto-generated method stub
+		TypedQuery<Trader> query = em.createQuery("SELECT p FROM Trader AS p ", Trader.class);
+		List<Trader> traders = query.getResultList();
+		System.out.println(traders);
+		return traders;
 	}
 
 }
