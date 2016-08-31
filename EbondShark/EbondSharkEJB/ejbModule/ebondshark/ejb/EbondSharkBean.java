@@ -16,6 +16,7 @@ import javax.persistence.TypedQuery;
 import ebondshark.jpa.Bond;
 import ebondshark.jpa.Trade;
 import ebondshark.jpa.Trader;
+import ebondshark.jpa.Tradesview;
 
 /**
  * Session Bean implementation class EbondSharkBean
@@ -120,7 +121,7 @@ public class EbondSharkBean implements EbondSharkBeanRemote, EbondSharkBeanLocal
 
 	@Override
 	public String login(String username, String password) {
-		TypedQuery<Trader> login = em.createQuery("SELECT p FROM Trader WHERE p.trader_id like :user", Trader.class);
+		TypedQuery<Trader> login = em.createQuery("SELECT p FROM Trader p WHERE p.trader_id = :user", Trader.class);
 		login.setParameter("user", username);
 		List<Trader> result = login.getResultList();
 		if (result == null) {
@@ -128,7 +129,7 @@ public class EbondSharkBean implements EbondSharkBeanRemote, EbondSharkBeanLocal
 		} else if (password.compareTo(result.get(0).getPassword()) == 0) {
 			setUsername(username);
 			setPassword(password);
-			return "Succesful Login";
+			return "Successful Login";
 		}
 		return "Wrong password entered";
 	}
@@ -142,16 +143,16 @@ public class EbondSharkBean implements EbondSharkBeanRemote, EbondSharkBeanLocal
 	}
 
 	public String getUsername() {
-		return username;
+		return this.username;
 	}
 
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
 
 	@Override
 	public String register(Trader tObj) {
-		TypedQuery<Trader> check = em.createQuery("SELECT p FROM Trader WHERE p.trader_id like :user", Trader.class);
+		TypedQuery<Trader> check = em.createQuery("SELECT p FROM Trader WHERE p.trader_id = :user", Trader.class);
 		check.setParameter("user", tObj.getTrader_id());
 		if (check.getResultList() != null) {
 			return "Trader with " + tObj.getTraderName() + "already exists";
@@ -176,13 +177,23 @@ public class EbondSharkBean implements EbondSharkBeanRemote, EbondSharkBeanLocal
 	}
 
 	@Override
-	public List<Trade> getAllTrades() {
+	public List<Tradesview> getAllTrades() {
 		// TODO Auto-generated method stub
-		// TypedQuery<Trade> query = em.createQuery("SELECT p FROM Trade AS p ",
-		// Trade.class);
-		Query query = em.createNativeQuery("SELECT *, b.isin FROM Trades p ,Bonds b where p.isin = b.isin",
-				Trade.class);
-		List<Trade> trades = query.getResultList();
+		TypedQuery<Tradesview> query = em.createQuery("SELECT p FROM Tradesview AS p",Tradesview.class);
+		//Query query = em.createNativeQuery("SELECT *, b.isin FROM Trades p ,Bonds b where p.isin = b.isin",
+		//		Trade.class);
+		List<Tradesview> trades = query.getResultList();
+		System.out.println(trades);
+		return trades;
+	}
+
+	@Override
+	public List<Tradesview> getAllTradesByTrader() {
+		// TODO Auto-generated method stub
+		TypedQuery<Tradesview> query = em.createQuery("SELECT p FROM Tradesview AS p where p.trader_id = :"+ this.getUsername(),Tradesview.class);
+		//Query query = em.createNativeQuery("SELECT *, b.isin FROM Trades p ,Bonds b where p.isin = b.isin",
+		//		Trade.class);
+		List<Tradesview> trades = query.getResultList();
 		System.out.println(trades);
 		return trades;
 	}
@@ -195,5 +206,14 @@ public class EbondSharkBean implements EbondSharkBeanRemote, EbondSharkBeanLocal
 		System.out.println(traders);
 		return traders;
 	}
+	
+	@Override
+	public Trader getTraderbyTraderName() {
+		TypedQuery<Trader> query = em.createQuery("SELECT p FROM Trader AS p where p.trader_id = :"+ this.getPassword(), Trader.class);
+		Trader trader = query.getSingleResult();
+		System.out.println();
+		return trader;
+	}
+
 
 }

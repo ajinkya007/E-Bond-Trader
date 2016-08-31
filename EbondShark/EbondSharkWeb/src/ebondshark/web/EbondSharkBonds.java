@@ -3,6 +3,7 @@
  */
 package ebondshark.web;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
@@ -17,6 +18,9 @@ import javax.ws.rs.QueryParam;
 
 import ebondshark.ejb.EbondSharkBeanLocal;
 import ebondshark.jpa.Bond;
+import ebondshark.jpa.Trade;
+import ebondshark.jpa.Trader;
+import ebondshark.jpa.Tradesview;
 
 /**
  * @author Grad94
@@ -102,7 +106,7 @@ public class EbondSharkBonds {
 		if (bean == null)
 			return null;
 
-		System.out.println(filter + "Hello");
+		System.out.println(filter);
 		return bean.getBondsByFrequency(Integer.parseInt(filter));
 	}
 
@@ -115,6 +119,123 @@ public class EbondSharkBonds {
 
 		System.out.println(filter);
 		return bean.getBondsByYieldRange(Integer.parseInt(filter) % 10, Integer.parseInt(filter) / 100);
+	}
+
+	@GET
+	@Path("/alltradedetails")
+	@Produces("application/json")
+	public List<Tradesview> getTradeDetails() {
+
+		if (bean == null)
+			return null;
+		return bean.getAllTrades();
+	}
+
+	@GET
+	@Path("/tradertradedetails")
+	@Produces("application/json")
+	public List<Tradesview> getTraderTradeDetails() {
+
+		if (bean == null)
+			return null;
+		return bean.getAllTradesByTrader();
+	}
+
+	@GET
+	@Path("/traders")
+	@Produces("application/json")
+	public List<Trader> getTraders() {
+
+		if (bean == null)
+			return null;
+		return bean.getAllTraders();
+
+	}
+
+	@GET
+	@Path("/bonddetails")
+	@Produces("application/json")
+	public BondDetails getBondDetails(@QueryParam("ISIN") @DefaultValue("") String ISIN,
+			@QueryParam("Qty") @DefaultValue("10") String Qty, @QueryParam("param") @DefaultValue("") String param,
+			@QueryParam("value") @DefaultValue("") String value) {
+
+		Bond bond = bean.getBondByISIN(ISIN);
+		BondDetails bondDetails = new BondDetails();
+		System.out.println(bondDetails.accruedAmount(bond));
+		bondDetails.setISIN(ISIN);
+		bondDetails.setQuantity(Integer.parseInt(Qty));
+		if (param.equals("Yield")) {
+			bondDetails.setDesiredYield(Double.parseDouble(value));
+			bondDetails.setCleanPrice(bondDetails.calculateCleanPrice(bond));
+			bondDetails.setDirtyPrice(bondDetails.accruedAmount(bond) + bondDetails.getCleanPrice());
+		} else if (param.equals("CleanPrice")) {
+			bondDetails.setCleanPrice(Double.parseDouble(value));
+			bondDetails.setDesiredYield(bondDetails.getYield(bond));
+			bondDetails.setDirtyPrice(bondDetails.getCleanPrice() + bondDetails.accruedAmount(bond));
+		} else if (param.equals("DirtyPrice")) {
+			bondDetails.setDirtyPrice(Double.parseDouble(value));
+			bondDetails.setCleanPrice(bondDetails.getDirtyPrice() - bondDetails.accruedAmount(bond));
+			bondDetails.setDesiredYield(bondDetails.getYield(bond));
+		}
+		bondDetails.setSettlementAmount(bondDetails.getFacevalue() * bondDetails.getQuantity());
+		bondDetails.setAccruedAmount(bondDetails.accruedAmount(bond));
+		System.out.println(bondDetails);
+		return bondDetails;
+
+	}
+
+	@GET
+	@Path("/login")
+	@Produces("text/plain")
+	public String getUserLogin(@QueryParam("User") @DefaultValue("") String user,
+			@QueryParam("password") @DefaultValue("") String password) {
+
+		if (bean == null)
+			return null;
+		String output = bean.login(user, password);
+		/*
+		 * if (output.equals("Succesful Login")) return
+		 * Response.status(200).entity(output).build(); else if (output.equals(
+		 * "Trader does not exist")) return
+		 * Response.status(404).entity(output).build(); else if (output.equals(
+		 * "Wrong password entered")) return
+		 * Response.status(401).entity(output).build();
+		 */
+		return output;
+
+	}
+
+	@GET
+	@Path("/tradePlaced")
+	@Produces("text/plain")
+	public String setTradePlaced(@QueryParam("ISIN") String ISIN, @QueryParam("year") String year,
+			@QueryParam("month") String month, @QueryParam("day") String day, @QueryParam("hour") String hour,
+			@QueryParam("minutes") String minutes, @QueryParam("seconds") String seconds,
+			@QueryParam("buySell") String buySell, @QueryParam("price") String price, @QueryParam("Qty") String Qty) {
+
+		if (bean == null)
+			return null;
+		List<Tradesview> list = bean.getAllTrades();
+		Trade placedTrade = new Trade();
+		placedTrade.setTrade_id(list.size() + 1);
+		placedTrade.setNoOfBonds(Integer.parseInt(Qty));
+		placedTrade.setBuySell(buySell);
+		placedTrade.setPrice(BigDecimal.valueOf(Double.parseDouble(price)));
+		placedTrade.setTradeStatus("processed");
+		placedTrade.setDay(Integer.parseInt(day));
+		placedTrade.setMonth(Integer.parseInt(month));
+		placedTrade.setYear(Integer.parseInt(year));
+		placedTrade.setHour(Integer.parseInt(hour));
+		placedTrade.setMinutes(Integer.parseInt(minutes));
+		placedTrade.setSeconds(Integer.parseInt(seconds));
+		Bond bond = bean.getBondByISIN(ISIN);
+		bond.getTrades().add(placedTrade);
+		Trader trader = bean.getTraderbyTraderName();
+		trader.getTrades().add(placedTrade);
+
+		System.out.println(placedTrade.getTrade_id() + " hi");
+		return Qty;
+
 	}
 
 }

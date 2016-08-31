@@ -13,8 +13,6 @@ public class RestApplication extends Application {
 
 	public RestApplication() {
 		singletons.add(new EbondSharkBonds());
-		singletons.add(new EbondSharkBondDetails());
-		singletons.add(new EbondSharkTrades());
 	}
 
 }

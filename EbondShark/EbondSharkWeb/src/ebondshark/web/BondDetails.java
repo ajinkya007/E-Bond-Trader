@@ -1,5 +1,6 @@
 package ebondshark.web;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -13,6 +14,24 @@ public class BondDetails {
 	private double cleanPrice;
 	private double dirtyPrice;
 	private static final double faceValue = 100;
+	private double settlementAmount;
+	private double accruedAmount;
+
+	public double getSettlementAmount() {
+		return settlementAmount;
+	}
+
+	public void setSettlementAmount(double settlementAmount) {
+		this.settlementAmount = settlementAmount;
+	}
+
+	public double getAccruedAmount() {
+		return accruedAmount;
+	}
+
+	public void setAccruedAmount(double accruedAmount) {
+		this.accruedAmount = accruedAmount;
+	}
 
 	public BondDetails() {
 		// TODO Auto-generated constructor stub
@@ -51,7 +70,8 @@ public class BondDetails {
 	}
 
 	public void setCleanPrice(double cleanPrice) {
-		this.cleanPrice = cleanPrice;
+		Double truncatedCleanPrice = new BigDecimal(cleanPrice).setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();
+		this.cleanPrice = truncatedCleanPrice;
 	}
 
 	public double getDirtyPrice() {
@@ -59,7 +79,8 @@ public class BondDetails {
 	}
 
 	public void setDirtyPrice(double dirtyPrice) {
-		this.dirtyPrice = dirtyPrice;
+		Double truncatedDirtyPrice = new BigDecimal(dirtyPrice).setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();
+		this.dirtyPrice = truncatedDirtyPrice;
 	}
 
 	public double getFacevalue() {
@@ -68,15 +89,17 @@ public class BondDetails {
 
 	public double accruedAmount(Bond bond) {
 
-		@SuppressWarnings("deprecation")
-		Date date = new Date(bond.getIssueYear(), bond.getIssueMonth(), bond.getIssueDay());
-		int MILLIS_IN_DAY = 1000 * 60 * 60 * 24;
-		long endInstant = Calendar.getInstance().getTimeInMillis();
-		double couponDuration = 365 / bond.getFrequency();
-		double reqNumberOfDays = ((int) ((endInstant - date.getTime()) / MILLIS_IN_DAY) % couponDuration);
+		int MILI_SECS_IN_DAY = 1000 * 60 * 60 * 24;
+		Calendar endInstant = Calendar.getInstance();
+		endInstant.set(bond.getIssueYear(), bond.getIssueMonth(), bond.getIssueDay());
+
+		double couponDuration = 360 / bond.getFrequency();
+		double reqNumberOfDays = ((int) ((Calendar.getInstance().getTimeInMillis() - endInstant.getTimeInMillis())
+				/ MILI_SECS_IN_DAY) % couponDuration);
 		double couponRate = (bond.getCoupon()).doubleValue();
-		double accAmount = faceValue * (bond.getFrequency()) * couponRate * (reqNumberOfDays / couponDuration);
+		double accAmount = faceValue * (1 / bond.getFrequency()) * couponRate * (reqNumberOfDays / couponDuration);
 		return accAmount;
+
 	}
 
 	public double calculateCleanPrice(Bond bond) {
@@ -102,7 +125,9 @@ public class BondDetails {
 	public double getYield(Bond bond) {
 		double couponRate = (bond.getCoupon()).doubleValue();
 		double couponAmount = faceValue * couponRate / 100;
-		return couponAmount / this.cleanPrice * 100;
+		double yield = couponAmount / this.cleanPrice * 100;
+		Double truncatedYield = new BigDecimal(dirtyPrice).setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();
+		return truncatedYield;
 	}
 
 }
