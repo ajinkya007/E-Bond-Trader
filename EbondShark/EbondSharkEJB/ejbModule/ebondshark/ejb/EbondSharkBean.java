@@ -1,6 +1,6 @@
 package ebondshark.ejb;
 
-import java.util.Calendar;
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -10,8 +10,10 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 import ebondshark.jpa.Bond;
 import ebondshark.jpa.Trade;
@@ -24,10 +26,10 @@ import ebondshark.jpa.Tradesview;
 @Stateful
 @Remote(EbondSharkBeanRemote.class)
 @Local(EbondSharkBeanLocal.class)
-@TransactionManagement(TransactionManagementType.BEAN)
+@TransactionManagement(TransactionManagementType.CONTAINER)
 public class EbondSharkBean implements EbondSharkBeanRemote, EbondSharkBeanLocal {
 
-	@PersistenceContext(name = "EbondSharkJPA")
+	@PersistenceContext(name = "EbondSharkJPA", type = PersistenceContextType.EXTENDED)
 	private EntityManager em;
 
 	private String username;
@@ -63,7 +65,7 @@ public class EbondSharkBean implements EbondSharkBeanRemote, EbondSharkBeanLocal
 		String sql = "SELECT p FROM Bond AS p WHERE p.isin LIKE '%" + isin + "%'";
 		TypedQuery<Bond> query = em.createQuery(sql, Bond.class);
 		List<Bond> bondsByIsin = query.getResultList();
-		System.out.println(bondsByIsin);
+		// System.out.println(bondsByIsin);
 		return bondsByIsin;
 	}
 
@@ -72,8 +74,9 @@ public class EbondSharkBean implements EbondSharkBeanRemote, EbondSharkBeanLocal
 
 		TypedQuery<Bond> query = em.createQuery("SELECT p FROM Bond as p WHERE p.isin = :ISIN", Bond.class);
 		query.setParameter("ISIN", isin);
+		// System.out.println(isin);
 		Bond bond = query.getSingleResult();
-		System.out.println(bond);
+		System.out.println("Bond by ISIN: " + bond);
 		return bond;
 	}
 
@@ -129,6 +132,7 @@ public class EbondSharkBean implements EbondSharkBeanRemote, EbondSharkBeanLocal
 		} else if (password.compareTo(result.get(0).getPassword()) == 0) {
 			setUsername(username);
 			setPassword(password);
+			System.out.println(getUsername() + " " + getPassword());
 			return "Successful Login";
 		}
 		return "Wrong password entered";
@@ -179,20 +183,24 @@ public class EbondSharkBean implements EbondSharkBeanRemote, EbondSharkBeanLocal
 	@Override
 	public List<Tradesview> getAllTrades() {
 		// TODO Auto-generated method stub
-		TypedQuery<Tradesview> query = em.createQuery("SELECT p FROM Tradesview AS p",Tradesview.class);
-		//Query query = em.createNativeQuery("SELECT *, b.isin FROM Trades p ,Bonds b where p.isin = b.isin",
-		//		Trade.class);
+		TypedQuery<Tradesview> query = em.createQuery("SELECT p FROM Tradesview AS p", Tradesview.class);
+		// Query query = em.createNativeQuery("SELECT *, b.isin FROM Trades p
+		// ,Bonds b where p.isin = b.isin",
+		// Trade.class);
 		List<Tradesview> trades = query.getResultList();
 		System.out.println(trades);
 		return trades;
 	}
 
 	@Override
-	public List<Tradesview> getAllTradesByTrader() {
+	public List<Tradesview> getAllTradesByTrader(String username) {
 		// TODO Auto-generated method stub
-		TypedQuery<Tradesview> query = em.createQuery("SELECT p FROM Tradesview AS p where p.trader_id = :"+ this.getUsername(),Tradesview.class);
-		//Query query = em.createNativeQuery("SELECT *, b.isin FROM Trades p ,Bonds b where p.isin = b.isin",
-		//		Trade.class);
+		TypedQuery<Tradesview> query = em.createQuery("SELECT p FROM Tradesview AS p where p.trader_id = :user",
+				Tradesview.class);
+		// Query query = em.createNativeQuery("SELECT *, b.isin FROM Trades p
+		// ,Bonds b where p.isin = b.isin",
+		// Trade.class);
+		query.setParameter("user", username);
 		List<Tradesview> trades = query.getResultList();
 		System.out.println(trades);
 		return trades;
@@ -206,14 +214,112 @@ public class EbondSharkBean implements EbondSharkBeanRemote, EbondSharkBeanLocal
 		System.out.println(traders);
 		return traders;
 	}
-	
+
 	@Override
-	public Trader getTraderbyTraderName() {
-		TypedQuery<Trader> query = em.createQuery("SELECT p FROM Trader AS p where p.trader_id = :"+ this.getPassword(), Trader.class);
+	public Trader getTraderbyTraderName(String username) {
+		TypedQuery<Trader> query = em.createQuery("SELECT p FROM Trader AS p where p.trader_id = :user", Trader.class);
+		query.setParameter("user", username);
 		Trader trader = query.getSingleResult();
-		System.out.println();
+		System.out.println("Ajinkya");
+		System.out.println(trader);
 		return trader;
 	}
 
+	@Override
+	public void saveTrade(String username, String ISIN, String year, String month, String day, String hour,
+			String minutes, String seconds, String buySell, String price, String Qty) {
+		// TODO Auto-generated method stub
+
+		// List<Tradesview> list = bean.getAllTrades();
+		Trade placedTrade = new Trade();
+		// placedTrade.setTrade_id(list.size() + 1);
+		Bond bond = this.getBondByISIN(ISIN);
+		Trader trader = this.getTraderbyTraderName(username);
+		placedTrade.setBond(bond);
+		placedTrade.setTrader(trader);
+		bond.addTrade(placedTrade);
+		/*
+		 * bond.getTrades().add(placedTrade);
+		 * trader.getTrades().add(placedTrade);
+		 */
+		placedTrade.setNoOfBonds(Integer.parseInt(Qty));
+		placedTrade.setBuySell(buySell);
+		placedTrade.setPrice(BigDecimal.valueOf(Double.parseDouble(price)));
+		placedTrade.setTradeStatus("processed");
+		placedTrade.setDay(Integer.parseInt(day));
+		placedTrade.setMonth(Integer.parseInt(month));
+		placedTrade.setYear(Integer.parseInt(year));
+		placedTrade.setHour(Integer.parseInt(hour));
+		placedTrade.setMinutes(Integer.parseInt(minutes));
+		placedTrade.setSeconds(Integer.parseInt(seconds));
+		em.persist(placedTrade);
+		System.out.println("Trade done successfully.");
+
+		// Update the bondprice
+		// Bond tbond = this.getBondByISIN(ISIN);
+		// tbond.addTrade(placedTrade);
+		// tbond.getTrades().add(placedTrade);
+		// placedTrade.setBond(tbond);
+		// tbond.setLast(BigDecimal.valueOf(Double.parseDouble(price)));
+		/*
+		 * if (tbond.getLast().compareTo(tbond.getHigh()) == 1)
+		 * tbond.setHigh(placedTrade.getPrice()); else if
+		 * (tbond.getLast().compareTo(tbond.getLow()) == -1)
+		 * tbond.setLow(placedTrade.getPrice()); em.persist(tbond);
+		 */
+
+		Query query = em.createQuery("Update Bond  as b SET  b.last = :last where b.isin = :isin");
+		query.setParameter("last", placedTrade.getPrice());
+		query.setParameter("isin", ISIN);
+		int count = query.executeUpdate();
+		if (count > 0)
+			System.out.println("Bond details merged.");
+		else
+			System.out.println("Err");
+
+		BigDecimal last = placedTrade.getPrice();
+		BigDecimal low = bond.getLow().compareTo(last) == 1 ? last : bond.getLow();
+		BigDecimal high = bond.getHigh().compareTo(last) == -1 ? last : bond.getHigh();
+
+		query = em.createQuery("Update Bond  as b SET  b.low = :low where b.isin = :isin");
+		query.setParameter("low", low);
+		query.setParameter("isin", ISIN);
+		count = query.executeUpdate();
+
+		query = em.createQuery("Update Bond  as b SET  b.high = :high where b.isin = :isin");
+		query.setParameter("high", high);
+		query.setParameter("isin", ISIN);
+		count = query.executeUpdate();
+
+	}
+
+	@Override
+	public String register(String username, String password, String traderName, String age, String sex, String address,
+			String phoneNo, String creditRating) {
+		// TODO Auto-generated method stub
+		/*Query query = em.createQuery(
+				"INSERT INTO Trader VALUES (' "
+						+ username + "',' " + password + "',' " + traderName + "','" + age + "','" + sex + "','"
+						+ address + "','" + phoneNo + "','" + creditRating + "')");
+		*//*
+		 * query.setParameter("username", username);
+		 * query.setParameter("password", password);
+		 * query.setParameter("traderName", traderName);
+		 * query.setParameter("age", age); query.setParameter("sex", sex);
+		 * query.setParameter("address", address); query.setParameter("phoneNo",
+		 * phoneNo); query.setParameter("creditRating", creditRating);
+		 */
+		em.createNativeQuery("INSERT INTO Trader VALUES (' "
+						+ username + "',' " + password + "',' " + traderName + "','" + age + "','" + sex + "','"
+						+ address + "','" + phoneNo + "','" + creditRating + "')");
+		int res = em.createNativeQuery("INSERT INTO Trader VALUES (' "
+				+ username + "',' " + password + "',' " + traderName + "','" + age + "','" + sex + "','"
+				+ address + "','" + phoneNo + "','" + creditRating + "')").executeUpdate();
+		//query.executeUpdate();
+		if (res > 0)
+			return "User created successfully.";
+		else
+			return "User not created.";
+	}
 
 }

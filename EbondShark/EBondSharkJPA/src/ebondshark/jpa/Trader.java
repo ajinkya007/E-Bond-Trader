@@ -46,7 +46,7 @@ public class Trader implements Serializable {
 	private String traderName;
 
 	//bi-directional many-to-one association to Trade
-	@OneToMany(fetch= FetchType.EAGER, mappedBy="trader")
+	@OneToMany(fetch= FetchType.EAGER, mappedBy="trader",cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
 	@JsonManagedReference
 	private List<Trade> trades;
 

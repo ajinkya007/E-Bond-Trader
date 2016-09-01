@@ -19,8 +19,7 @@ public class Trade implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TRADES_TRADE_ID_GENERATOR" )
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TRADES_TRADE_ID_GENERATOR")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique=true, nullable=false)
 	private int trade_id;
 	
@@ -61,9 +60,9 @@ public class Trade implements Serializable {
 	private Bond bond;
 
 	//bi-directional many-to-one association to Trader
-	@ManyToOne(fetch= FetchType.EAGER)
-	@JoinColumn(name="Trader_id", nullable=false)
+	@ManyToOne(fetch= FetchType.EAGER,cascade={CascadeType.ALL})
 	@JsonBackReference
+	@JoinColumn(name="Trader_id", nullable=false)
 	private Trader trader;
 
 	public Trade() {

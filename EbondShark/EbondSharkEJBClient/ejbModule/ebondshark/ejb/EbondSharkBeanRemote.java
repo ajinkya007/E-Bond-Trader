@@ -35,7 +35,17 @@ public interface EbondSharkBeanRemote {
 
 	public Bond getBondByISIN(String isin);
 
-	public List<Tradesview> getAllTradesByTrader();
+	public List<Tradesview> getAllTradesByTrader(String username);
 
-	public Trader getTraderbyTraderName();
+	public Trader getTraderbyTraderName(String username);
+	
+	public String getUsername();
+	
+	public void saveTrade(String username, String iSIN, String year, String month, String day, String hour,
+			String minutes, String seconds, String buySell, String price, String qty);
+
+	public String register(String username, String password, String traderName, String age, String sex, String address,
+			String phoneNo, String creditRating);
+
+
 }

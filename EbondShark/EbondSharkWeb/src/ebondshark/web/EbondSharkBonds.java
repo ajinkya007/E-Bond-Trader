@@ -9,6 +9,7 @@ import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -39,6 +40,7 @@ public class EbondSharkBonds {
 			InitialContext context = new InitialContext();
 			bean = (EbondSharkBeanLocal) context
 					.lookup("java:app/EbondSharkEJB/EbondSharkBean!ebondshark.ejb.EbondSharkBeanLocal");
+			System.out.println(bean.hashCode());
 		} catch (NamingException ex) {
 		}
 
@@ -134,11 +136,11 @@ public class EbondSharkBonds {
 	@GET
 	@Path("/tradertradedetails")
 	@Produces("application/json")
-	public List<Tradesview> getTraderTradeDetails() {
+	public List<Tradesview> getTraderTradeDetails(@QueryParam("Username") @DefaultValue("") String username) {
 
 		if (bean == null)
 			return null;
-		return bean.getAllTradesByTrader();
+		return bean.getAllTradesByTrader(username);
 	}
 
 	@GET
@@ -208,33 +210,32 @@ public class EbondSharkBonds {
 	@GET
 	@Path("/tradePlaced")
 	@Produces("text/plain")
-	public String setTradePlaced(@QueryParam("ISIN") String ISIN, @QueryParam("year") String year,
-			@QueryParam("month") String month, @QueryParam("day") String day, @QueryParam("hour") String hour,
-			@QueryParam("minutes") String minutes, @QueryParam("seconds") String seconds,
-			@QueryParam("buySell") String buySell, @QueryParam("price") String price, @QueryParam("Qty") String Qty) {
+	public String setTradePlaced1(@QueryParam("Username") String username, @QueryParam("ISIN") String ISIN,
+			@QueryParam("year") String year, @QueryParam("month") String month, @QueryParam("day") String day,
+			@QueryParam("hour") String hour, @QueryParam("minutes") String minutes,
+			@QueryParam("seconds") String seconds, @QueryParam("buySell") String buySell,
+			@QueryParam("price") String price, @QueryParam("Qty") String Qty) {
 
 		if (bean == null)
 			return null;
-		List<Tradesview> list = bean.getAllTrades();
-		Trade placedTrade = new Trade();
-		placedTrade.setTrade_id(list.size() + 1);
-		placedTrade.setNoOfBonds(Integer.parseInt(Qty));
-		placedTrade.setBuySell(buySell);
-		placedTrade.setPrice(BigDecimal.valueOf(Double.parseDouble(price)));
-		placedTrade.setTradeStatus("processed");
-		placedTrade.setDay(Integer.parseInt(day));
-		placedTrade.setMonth(Integer.parseInt(month));
-		placedTrade.setYear(Integer.parseInt(year));
-		placedTrade.setHour(Integer.parseInt(hour));
-		placedTrade.setMinutes(Integer.parseInt(minutes));
-		placedTrade.setSeconds(Integer.parseInt(seconds));
-		Bond bond = bean.getBondByISIN(ISIN);
-		bond.getTrades().add(placedTrade);
-		Trader trader = bean.getTraderbyTraderName();
-		trader.getTrades().add(placedTrade);
 
-		System.out.println(placedTrade.getTrade_id() + " hi");
+		bean.saveTrade(username, ISIN, year, month, day, hour, minutes, seconds, buySell, price, Qty);
 		return Qty;
+
+	}
+
+	@GET
+	@Path("/Register")
+	@Produces("text/plain")
+	public String setTradePlaced1(@QueryParam("Username") String username, @QueryParam("Password") String password,
+			@QueryParam("TraderName") String traderName, @QueryParam("Age") String age, @QueryParam("Sex") String Sex,
+			@QueryParam("Address") String address, @QueryParam("PhoneNo") String phoneNo,
+			@QueryParam("CreditRating") String creditRating) {
+
+		if (bean == null)
+			return null;
+
+		return bean.register(username, password, traderName, age, Sex, address, phoneNo, creditRating);
 
 	}
 
