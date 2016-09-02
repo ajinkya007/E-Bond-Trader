@@ -277,7 +277,8 @@ public class EbondSharkBean implements EbondSharkBeanRemote, EbondSharkBeanLocal
 		else
 			System.out.println("Err");
 
-		BigDecimal last = placedTrade.getPrice();
+		/*Double lastIni = bond.getLast().doubleValue();
+		*/BigDecimal last = placedTrade.getPrice();
 		BigDecimal low = bond.getLow().compareTo(last) == 1 ? last : bond.getLow();
 		BigDecimal high = bond.getHigh().compareTo(last) == -1 ? last : bond.getHigh();
 
@@ -285,7 +286,12 @@ public class EbondSharkBean implements EbondSharkBeanRemote, EbondSharkBeanLocal
 		query.setParameter("low", low);
 		query.setParameter("isin", ISIN);
 		count = query.executeUpdate();
-
+		
+		/*query = em.createQuery("Update Bond  as b SET  b.change = :change where b.isin = :isin");
+		query.setParameter("change", BigDecimal.valueOf((last.doubleValue() - lastIni) * 100.0 / lastIni));
+		query.setParameter("isin", ISIN);
+		count = query.executeUpdate();
+*/
 		query = em.createQuery("Update Bond  as b SET  b.high = :high where b.isin = :isin");
 		query.setParameter("high", high);
 		query.setParameter("isin", ISIN);
