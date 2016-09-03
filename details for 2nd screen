@@ -1,9 +1,9 @@
 for bond booking
-UI guy will be passing:- type(buy/sell);  price_placed;  qty;  ISIN;  timestamp(6 fields);  total of 10 fields
+Adi and Shubham will be passing:- type(buy/sell);  price_placed;  qty;  ISIN;  timestamp(6 fields);  total of 10 fields
+A corresponding query would be written and the databse would be updated with the new order placed.
 
 
 FOR computaion:
-UI guy will be passing ISIN; desired_yeild/cleanprice/dirtyprice(any one and other two will get computed);  qty  (total 3 paramaters)
+From the UI screen ISIN and the computational option will be passed; desired_yeild/cleanprice/dirtyprice(any one and other two will get computed);  qty  (total 3 paramaters)
 on java side we will retrieve bond attributes(coupon rate,frequency,yrs to maturity) based on the ISIN.
-we will compute
-desired yeild;  clean price; dirty price; settlement amount; accrued amount.
+we will compute the desired yeild;  clean price; dirty price; settlement amount; accrued amount.
